@@ -1,0 +1,97 @@
+Sub MainReport()
+Dim wb As Workbook
+Dim actsheet As Worksheet
+Dim lastRow As Integer
+Dim x As Integer, y As Integer
+Dim StartDate As String, Processed_SD As String
+Dim EndDate As String, Processed_ED As String
+
+StartDate = Application.InputBox("What is the first date in the range?", "Start Date", FormatDateTime(Date, vbShortDate), Type:=1)
+Processed_SD = Format(StartDate, "mm/dd/yyyy 00:00")
+EndDate = Application.InputBox("What is the last date in the range?", "End Date", FormatDateTime(Date, vbShortDate), Type:=1)
+Processed_ED = Format(StartDate, "mm/dd/yyyy 23:59")
+
+lastRow = ActiveWorksheet.UsedRange.Rows.Count
+
+
+'Highlights correct entries as green or false ones as yellow
+For i = 2 To lastRow
+    For j = 2 To lastRow
+        
+        If ActiveWorksheet.Cells(j, [Count]) = 1 Then 'Checks to make sure count = 1
+            'Start date - Load Analysis
+            If IsBlank(ActiveWorksheet.Cells(j, [LA START DATE])) = True Then 'Checks to make sure field isn't blank
+            ElseIf ActiveWorksheet.Cells(j, [START CHECK]) > 0 Then 'Checks to see if start field is true
+                ActiveWorksheet.Cells(i, [LA START DATE]).Interior.Color = RGB(51, 153, 102) 'If start field is true, colors field green
+            Else
+                ActiveWorksheet.Cells(i, [LA START DATE]).Interior.Color = RGB(255, 255, 0) 'If start field is false, colors field yellow
+            End If
+            
+            'Gap start - Load Analysis
+            If IsBlank(ActiveWorksheet.Cells(j, [LA GAP START])) = True Then 'Checks to make sure field isn't blank
+            ElseIf ActiveWorksheet.Cells(j, [GAP START CHECK]) > 0 Then 'Checks to see if start field is true
+                ActiveWorksheet.Cells(i, [LA GAP START]).Interior.Color = RGB(51, 153, 102) 'If start field is true, colors field green
+            Else
+                ActiveWorksheet.Cells(i, [LA GAP START]).Interior.Color = RGB(255, 255, 0) 'If start field is false, colors field yellow
+            End If
+            
+            'Gap Stop - Load Analysis
+            If IsBlank(ActiveWorksheet.Cells(j, [LA GAP END])) = True Then 'Checks to make sure field isn't blank
+            ElseIf ActiveWorksheet.Cells(j, [GAP END CHECK]) > 0 Then 'Checks to see if start field is true
+                ActiveWorksheet.Cells(i, [LA GAP END]).Interior.Color = RGB(51, 153, 102) 'If start field is true, colors field green
+            Else
+                ActiveWorksheet.Cells(i, [LA GAP END]).Interior.Color = RGB(255, 255, 0) 'If start field is false, colors field yellow
+            End If
+            
+            'End Date - Load Analysis
+            If IsBlank(ActiveWorksheet.Cells(j, [LA END DATE])) = True Then 'Checks to make sure field isn't blank
+            ElseIf ActiveWorksheet.Cells(j, [END CHECK]) > 0 Then 'Checks to see if start field is true
+                ActiveWorksheet.Cells(i, [LA END DATE]).Interior.Color = RGB(51, 153, 102) 'If start field is true, colors field green
+            Else
+                ActiveWorksheet.Cells(i, [LA END DATE]).Interior.Color = RGB(255, 255, 0) 'If start field is false, colors field yellow
+            End If
+            
+            'Start date - IEE
+            If IsBlank(ActiveWorksheet.Cells(j, [IEE START DATE])) = True Then
+            ElseIf ActiveWorksheet.Cells(j, [START CHECK]) > 0 Then
+                ActiveWorksheet.Cells(i, [IEE START DATE]).Interior.Color = RGB(51, 153, 102)
+            Else
+                ActiveWorksheet.Cells(i, [IEE START DATE]).Interior.Color = RGB(255, 255, 0)
+            End If
+            
+            'Gap start - IEE
+            If IsBlank(ActiveWorksheet.Cells(j, [IEE GAP START])) = True Then 'Checks to make sure field isn't blank
+            ElseIf ActiveWorksheet.Cells(j, [GAP START CHECK]) > 0 Then 'Checks to see if start field is true
+                ActiveWorksheet.Cells(i, [IEE GAP START]).Interior.Color = RGB(51, 153, 102) 'If start field is true, colors field green
+            Else
+                ActiveWorksheet.Cells(i, [IEE GAP START]).Interior.Color = RGB(255, 255, 0) 'If start field is false, colors field yellow
+            End If
+            
+            'Gap Stop - IEE
+            If IsBlank(ActiveWorksheet.Cells(j, [IEE GAP END])) = True Then 'Checks to make sure field isn't blank
+            ElseIf ActiveWorksheet.Cells(j, [GAP END CHECK]) > 0 Then 'Checks to see if start field is true
+                ActiveWorksheet.Cells(i, [IEE GAP END]).Interior.Color = RGB(51, 153, 102) 'If start field is true, colors field green
+            Else
+                ActiveWorksheet.Cells(i, [IEE GAP END]).Interior.Color = RGB(255, 255, 0) 'If start field is false, colors field yellow
+            End If
+            
+            'End Date - IEE
+            If IsBlank(ActiveWorksheet.Cells(j, [IEE END DATE])) = True Then 'Checks to make sure field isn't blank
+            ElseIf ActiveWorksheet.Cells(j, [END CHECK]) > 0 Then 'Checks to see if start field is true
+                ActiveWorksheet.Cells(i, [IEE END DATE]).Interior.Color = RGB(51, 153, 102) 'If start field is true, colors field green
+            Else
+                ActiveWorksheet.Cells(i, [IEE END DATE]).Interior.Color = RGB(255, 255, 0) 'If start field is false, colors field yellow
+            End If
+            
+            'Double checks the status of this entry is 0
+            'If ActiveWorksheet.Cells(j, [END CHECK]) = 0 Then
+                'If ActiveWorksheet.Cells(j, [LA END DATE]) < Processed_ED Then 'Checking difference between LA ED and End Date
+                    'If ActiveWorksheet.Cells(j, [IEE END DATE]) < Processed_ED Then 'Checking difference between IEE ED and End Date
+                        
+                        'ActiveWorksheet.Cells(j,10) = "Need " & Format([START_DATE]), "mm/dd/yyyy hh:mm") & " through " & Format(ActiveWorksheet.Cells(j,1), "mm/dd/yyyy hh:mm")"
+            
+        End If
+        
+    Next j
+Next i
+End Sub
